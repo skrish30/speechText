@@ -16,19 +16,21 @@ console.log(speechToText);
 
 var params ={
     objectMode: true,
-    //content_type: 'audio/webm;codecs=opus',
-    content_type: 'audio/wav',
+    content_type: 'audio/webm;codecs=opus',
+    //content_type: 'audio/wav',
     model: 'en-US_BroadbandModel',
     keywords: ['NASA'],
     keywords_threshold: 0.5,
-    max_alternatives:3 
+    max_alternatives:1,
+    smart_formatting: true
 };
 console.log(params);
 
 //create the stream
 var recognizeStream = speechToText.recognizeUsingWebSocket(params);
 //pipe in the audio
-fs.createReadStream('SpaceShuttle.wav').pipe(recognizeStream);
+//fs.createReadStream('SpaceShuttle.wav').pipe(recognizeStream);
+fs.createReadStream('video.webm').pipe(recognizeStream);
 
 //Listen for events
 recognizeStream.on('data',function(event){ onEvent('data:', event);});
