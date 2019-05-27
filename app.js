@@ -15,7 +15,7 @@ var speechToText =  new speechToTextV1({
 console.log(speechToText);
 
 var params ={
-    objectMode: true,
+    objectMode: false,
     content_type: 'audio/webm;codecs=opus',
     //content_type: 'audio/wav',
     model: 'en-US_BroadbandModel',
@@ -32,6 +32,11 @@ var recognizeStream = speechToText.recognizeUsingWebSocket(params);
 //fs.createReadStream('SpaceShuttle.wav').pipe(recognizeStream);
 fs.createReadStream('video.webm').pipe(recognizeStream);
 
+recognizeStream.pipe(fs.createWriteStream('transcription.txt'));
+
+
+
+
 //Listen for events
 recognizeStream.on('data',function(event){ onEvent('data:', event);});
 recognizeStream.on('error', function(event){ onEvent('error:', event);})
@@ -40,10 +45,10 @@ recognizeStream.on('error', function(event){ onEvent('error:', event);})
 //Displays event on the console
 function onEvent(name,event){
     let transcript = (name, JSON.stringify(event,null,2));
-    fs.writeFile('transcript.txt', transcript, (err)=>{
-        if(err) throw (err);
-        console.log('The file has been saved!');
-    });
+    //fs.writeFile('transcript.txt', transcript, (err)=>{
+    //    if(err) throw (err);
+    //    console.log('The file has been saved!');
+    //});
 
 };
 
