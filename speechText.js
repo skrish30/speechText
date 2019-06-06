@@ -40,7 +40,7 @@ console.log(params);
 //create the stream
 var recognizeStream = speechToText.recognizeUsingWebSocket(params);
 //pipe in the audio
-fs.createReadStream('SpaceShuttle.mp3').pipe(throttle).pipe(recognizeStream);
+fs.createReadStream('aliens_crop.mp3').pipe(throttle).pipe(recognizeStream);
 //fs.createReadStream('video.webm').pipe(recognizeStream);
 
 //recognizeStream.pipe(fs.createWriteStream('transcription.txt'));
@@ -55,10 +55,21 @@ recognizeStream.on('close', function(event) { closeEvent('close:', event,transcr
 
 //Displays event on the console
 function onEvent(name,event,transcripts){
-    let transcript = (name, JSON.stringify(event,null,2));
-    transcript = moment().format() + '\n' + transcript;
-    transcripts.write(transcript,'utf8')
-    console.log('files written')
+    //write all the transcript results
+    // let transcript = (name, JSON.stringify(event,null,2));
+    // transcript = moment().format() + '\n' + transcript;
+    // transcripts.write(transcript,'utf8')
+    // console.log('files written')
+    console.log(event)
+    if(event.results[0].final){
+        event.time =  moment().format();
+        event.results[0].alternatives[0].transcript += ".";
+        let transcript = JSON.stringify(event,null,2);
+        console.log(transcript)
+        transcripts.write(transcript,'utf8')
+        console.log('files written')
+        //event.results[0].alternatives[0].transcript
+    };
 };
 
 function closeEvent(name,event,transcript){
@@ -66,3 +77,6 @@ function closeEvent(name,event,transcript){
     console.log('files closed')
 };
 module.exports = app;
+
+
+
