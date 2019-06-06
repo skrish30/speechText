@@ -40,7 +40,7 @@ console.log(params);
 //create the stream
 var recognizeStream = speechToText.recognizeUsingWebSocket(params);
 //pipe in the audio
-fs.createReadStream('aliens_crop.mp3').pipe(throttle).pipe(recognizeStream);
+fs.createReadStream('aliens_test.mp3').pipe(throttle).pipe(recognizeStream);
 //fs.createReadStream('video.webm').pipe(recognizeStream);
 
 //recognizeStream.pipe(fs.createWriteStream('transcription.txt'));
